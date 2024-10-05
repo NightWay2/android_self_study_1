@@ -287,20 +287,6 @@ public class WarMapActivity extends AppCompatActivity {
         }
     }
 
-    /*private static int[] visited_your_arr;   // cols*rows array of each button id
-    private int[] visited_opponent_arr = null;
-    private static boolean isYourMove;
-    private TextView textViewMove;
-
-    private ImageView imageView;
-    private TextView textViewYourBoard;
-    private TextView textViewOpponentBoard;
-
-    private static final List<ImageView> imageViewList = new ArrayList<>();
-
-    private int numOfYourRuinsLeft;
-    private int numOfOpponentRuinsLeft;*/
-
     private final int[] our_shots = new int[100];
     private final int[] opponent_shots = new int[100];
 
@@ -326,16 +312,52 @@ public class WarMapActivity extends AppCompatActivity {
                     // TODO do something with win
                 }
             }
-            Toast.makeText(WarMapActivity.this, "Index: " + our_shots[indexOfShot],
-                    Toast.LENGTH_SHORT).show();
+            /*Toast.makeText(WarMapActivity.this, "Index: " + our_shots[indexOfShot],
+                    Toast.LENGTH_SHORT).show();*/
         } else {
             Toast.makeText(WarMapActivity.this, "Already shot", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void botTurn() {
-
+        int indexOfShot = new Random().nextInt(100);
+        if (opponent_shots[indexOfShot] == 0) {
+            if (visited_your_arr[indexOfShot] != 5 && visited_your_arr[indexOfShot] != 0) {
+                opponent_shots[indexOfShot] = visited_your_arr[indexOfShot];
+                ImageView targetButton = imageViewList.get(indexOfShot);
+                setRuinToButton(targetButton, opponent_shots[indexOfShot]);
+                numOfYourRuinsLeft--;
+                //botNextShot(indexOfShot); //TODO possibility to upgrade logic if someone wants
+                /*Toast.makeText(WarMapActivity.this, "Index bot: " + visited_your_arr[indexOfShot],
+                        Toast.LENGTH_SHORT).show();*/
+                if (numOfYourRuinsLeft == 0) {
+                    Toast.makeText(WarMapActivity.this, "Bot is winner!",
+                            Toast.LENGTH_SHORT).show();
+                    textViewMove.setText("Bot is winner!");
+                    // TODO do something with win
+                }
+                botTurn();
+            } else {
+                opponent_shots[indexOfShot] = 5;
+                ImageView targetButton = imageViewList.get(indexOfShot);
+                setRuinToButton(targetButton, opponent_shots[indexOfShot]);
+                textViewMove.setText("Your turn");
+                isYourMove = true;
+                /*Toast.makeText(WarMapActivity.this, "Index bot miss: " + visited_your_arr[indexOfShot],
+                        Toast.LENGTH_SHORT).show();*/
+            }
+        } else {
+            botTurn();
+        }
     }
+
+    /*private void botNextShot(int indexOfPreviousShot) { //TODO possibility to upgrade logic if someone wants
+        if (visited_your_arr[indexOfPreviousShot] == 1) {
+            botTurn();
+        } else {
+
+        }
+    }*/
 
     private void setRuinToButton(ImageView imageView, int type) {
         if (imageView == null) {
