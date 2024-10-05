@@ -258,7 +258,11 @@ public class WarMapActivity extends AppCompatActivity {
                         TableRow.LayoutParams.WRAP_CONTENT));
                 imageButton.setId((i - 1) * 10 + (j - 1) + 100); // Offset for opponent buttons
                 imageButton.setTag(String.valueOf((i - 1) * 10 + (j - 1) + 100));
+
+                // comment one
+                //imageButton.setImageResource(R.drawable.non_clicked_cell);
                 setIconToButton(imageButton, visited_opponent_arr[(i - 1) * 10 + (j - 1)]);
+
                 imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
                 tableRow.addView(imageButton);
