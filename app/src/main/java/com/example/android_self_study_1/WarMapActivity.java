@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -27,7 +28,6 @@ public class WarMapActivity extends AppCompatActivity {
     private static boolean isYourMove;
     private TextView textViewMove;
 
-    private Thread threadGs;
     private ImageView imageView;
     private TextView textViewYourBoard;
     private TextView textViewOpponentBoard;
@@ -77,11 +77,11 @@ public class WarMapActivity extends AppCompatActivity {
         // TODO change icons
 
         if (type == 1) {
-            imageView.setImageResource(R.drawable.one_part_ship);
+            imageView.setImageResource(R.drawable.digit_1);
         } else if (type == 2) {
-            imageView.setImageResource(R.drawable.two_part_ship);
+            imageView.setImageResource(R.drawable.digit_2);
         } else if (type == 3) {
-            imageView.setImageResource(R.drawable.three_part_ship);
+            imageView.setImageResource(R.drawable.digit_3);
         } else if (type == 4) {
             imageView.setImageResource(R.drawable.one_part_ship);
         } else if (type == 5 || type == 0) {
@@ -96,7 +96,7 @@ public class WarMapActivity extends AppCompatActivity {
         Random random = new Random();
 
         // Ship sizes and their respective counts
-        int[] shipSizes = {1, 1, 1, 1, 2, 2, 3, 3, 4};
+        int[] shipSizes = {1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
 
         for (int shipSize : shipSizes) {
             boolean placed = false;
@@ -267,12 +267,94 @@ public class WarMapActivity extends AppCompatActivity {
 
                 imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
+                imageButton.setOnClickListener(v -> {
+                    if (isYourMove) {
+                        int index = Integer.parseInt((String) v.getTag());
+                        //Toast.makeText(WarMapActivity.this, "Натиснуто: " + index, Toast.LENGTH_SHORT).show();
+                        checkShot(index, v);
+                    } else {
+                        Toast.makeText(WarMapActivity.this, "Not your turn",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 tableRow.addView(imageButton);
                 imageViewList.add(imageButton);
             }
             tableLayout.addView(tableRow, new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
+        }
+    }
+
+    /*private static int[] visited_your_arr;   // cols*rows array of each button id
+    private int[] visited_opponent_arr = null;
+    private static boolean isYourMove;
+    private TextView textViewMove;
+
+    private ImageView imageView;
+    private TextView textViewYourBoard;
+    private TextView textViewOpponentBoard;
+
+    private static final List<ImageView> imageViewList = new ArrayList<>();
+
+    private int numOfYourRuinsLeft;
+    private int numOfOpponentRuinsLeft;*/
+
+    private final int[] our_shots = new int[100];
+    private final int[] opponent_shots = new int[100];
+
+    private void checkShot(int indexOfShot, View v) {
+        // first shot always us, so after first shot we just start bot shot if we missed
+        indexOfShot = indexOfShot % 100;
+        if (our_shots[indexOfShot] == 0) {
+            our_shots[indexOfShot] = visited_opponent_arr[indexOfShot];
+            if (visited_opponent_arr[indexOfShot] == 0) {
+                our_shots[indexOfShot] = 5;
+                setRuinToButton((ImageView) v, 5); // empty ruin
+                isYourMove = false;
+                textViewMove.setText("Bot`s turn");
+                botTurn();
+            } else {
+                our_shots[indexOfShot] = visited_opponent_arr[indexOfShot];
+                setRuinToButton((ImageView) v, our_shots[indexOfShot]);
+                numOfOpponentRuinsLeft--;
+                if (numOfOpponentRuinsLeft == 0) {
+                    Toast.makeText(WarMapActivity.this, "You are winner!",
+                            Toast.LENGTH_SHORT).show();
+                    textViewMove.setText("You are winner!");
+                    // TODO do something with win
+                }
+            }
+            Toast.makeText(WarMapActivity.this, "Index: " + our_shots[indexOfShot],
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(WarMapActivity.this, "Already shot", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void botTurn() {
+
+    }
+
+    private void setRuinToButton(ImageView imageView, int type) {
+        if (imageView == null) {
+            Log.d("setRuinToButton", "Button was not found!");
+            return;
+        }
+
+        // TODO change icons
+
+        if (type == 1) {
+            imageView.setImageResource(R.drawable.digit_1_ruin);
+        } else if (type == 2) {
+            imageView.setImageResource(R.drawable.digit_2_ruin);
+        } else if (type == 3) {
+            imageView.setImageResource(R.drawable.digit_3_ruin);
+        } else if (type == 4) {
+            imageView.setImageResource(R.drawable.non_clicked_cell_ruin);
+        } else if (type == 5 || type == 0) {
+            imageView.setImageResource(R.drawable.non_clicked_cell_ruin);
         }
     }
 }

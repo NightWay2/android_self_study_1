@@ -166,6 +166,8 @@ public class ShipPlacementActivity extends AppCompatActivity {
                 imageButton.setOnClickListener(v -> {
                     ImageView iView = (ImageView) v;
 
+                    // TODO fix bug with round ships
+
                     // if one-part ship was selected to place
                     if (selectedTypeOfObject == 1 && visited_arr[iView.getId()] == 0
                             && onePartShipsNum > 0) {
@@ -349,11 +351,11 @@ public class ShipPlacementActivity extends AppCompatActivity {
         // TODO change pictures
 
         if (type == 1) {
-            imageView.setImageResource(R.drawable.one_part_ship);
+            imageView.setImageResource(R.drawable.digit_1);
         } else if (type == 2) {
-            imageView.setImageResource(R.drawable.one_part_ship);
+            imageView.setImageResource(R.drawable.digit_2);
         } else if (type == 3) {
-            imageView.setImageResource(R.drawable.one_part_ship);
+            imageView.setImageResource(R.drawable.digit_3);
         } else if (type == 4) {
             imageView.setImageResource(R.drawable.one_part_ship);
         } else if (type == 5) {
