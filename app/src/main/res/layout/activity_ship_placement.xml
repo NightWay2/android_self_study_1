@@ -6,90 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-
-        <TableRow
-            android:weightSum="4.0"
-            android:layout_height="30dp"
-            android:paddingTop="5dp"
-            android:layout_margin="5dp">
-            <TextView
-                android:id="@+id/numberOfOnePartShips_id"
-                android:layout_weight="2.0"
-                android:minHeight="30dp"
-                android:gravity="center"
-                android:text="4"
-                android:textSize="18sp"/>
-            <ImageButton
-                android:id="@+id/onePartShips_id"
-                android:gravity="center_horizontal"
-                android:src="@drawable/one_part_ship"
-                android:background="@color/gray"
-                android:layout_weight="2.0"/>
-        </TableRow>
-        <TableRow
-            android:weightSum="4.0"
-            android:layout_height="30dp"
-            android:layout_margin="5dp">
-            <TextView
-                android:id="@+id/numberOfTwoPartShips_id"
-                android:layout_weight="2.0"
-                android:minHeight="30dp"
-                android:gravity="center"
-                android:text="3"
-                android:textSize="18sp"/>
-            <ImageButton
-                android:id="@+id/twoPartShips_id"
-                android:src="@drawable/two_part_ship"
-                android:background="@color/gray"
-                android:gravity="center_horizontal"
-                android:text="25.0"
-                android:layout_weight="2.0"/>
-        </TableRow>
-        <TableRow
-            android:weightSum="4.0"
-            android:layout_height="30dp"
-            android:layout_margin="5dp">
-            <TextView
-                android:id="@+id/numberOfThreePartShips_id"
-                android:layout_weight="2.0"
-                android:minHeight="30dp"
-                android:gravity="center"
-                android:text="2"
-                android:textSize="18sp"/>
-            <ImageButton
-                android:id="@+id/threePartShips_id"
-                android:src="@drawable/three_part_ship"
-                android:background="@color/gray"
-                android:gravity="center_horizontal"
-                android:text="25.0"
-                android:layout_weight="2.0"/>
-        </TableRow>
-        <TableRow
-            android:weightSum="4.0"
-            android:layout_height="30dp"
-            android:layout_margin="5dp">
-            <TextView
-                android:id="@+id/numberOfFourPartShips_id"
-                android:layout_weight="2.0"
-                android:minHeight="30dp"
-                android:gravity="center"
-                android:text="1"
-                android:textSize="18sp"/>
-            <ImageButton
-                android:id="@+id/fourPartShips_id"
-                android:src="@drawable/three_part_ship"
-                android:background="@color/gray"
-                android:gravity="center_horizontal"
-                android:text="25.0"
-                android:layout_weight="2.0"/>
-        </TableRow>
-
-    </TableLayout>
-
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -119,6 +35,90 @@
             </ScrollView>
 
         </HorizontalScrollView>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <TableRow
+                android:weightSum="4.0"
+                android:layout_height="30dp"
+                android:paddingTop="5dp"
+                android:layout_margin="5dp">
+                <TextView
+                    android:id="@+id/numberOfOnePartShips_id"
+                    android:layout_weight="2.0"
+                    android:minHeight="30dp"
+                    android:gravity="center"
+                    android:text="4"
+                    android:textSize="18sp"/>
+                <ImageButton
+                    android:id="@+id/onePartShips_id"
+                    android:gravity="center_horizontal"
+                    android:src="@drawable/one_part_ship"
+                    android:background="@color/gray"
+                    android:layout_weight="2.0"/>
+            </TableRow>
+            <TableRow
+                android:weightSum="4.0"
+                android:layout_height="30dp"
+                android:layout_margin="5dp">
+                <TextView
+                    android:id="@+id/numberOfTwoPartShips_id"
+                    android:layout_weight="2.0"
+                    android:minHeight="30dp"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textSize="18sp"/>
+                <ImageButton
+                    android:id="@+id/twoPartShips_id"
+                    android:src="@drawable/two_part_ship"
+                    android:background="@color/gray"
+                    android:gravity="center_horizontal"
+                    android:text="25.0"
+                    android:layout_weight="2.0"/>
+            </TableRow>
+            <TableRow
+                android:weightSum="4.0"
+                android:layout_height="30dp"
+                android:layout_margin="5dp">
+                <TextView
+                    android:id="@+id/numberOfThreePartShips_id"
+                    android:layout_weight="2.0"
+                    android:minHeight="30dp"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textSize="18sp"/>
+                <ImageButton
+                    android:id="@+id/threePartShips_id"
+                    android:src="@drawable/three_part_ship"
+                    android:background="@color/gray"
+                    android:gravity="center_horizontal"
+                    android:text="25.0"
+                    android:layout_weight="2.0"/>
+            </TableRow>
+            <TableRow
+                android:weightSum="4.0"
+                android:layout_height="30dp"
+                android:layout_margin="5dp">
+                <TextView
+                    android:id="@+id/numberOfFourPartShips_id"
+                    android:layout_weight="2.0"
+                    android:minHeight="30dp"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="18sp"/>
+                <ImageButton
+                    android:id="@+id/fourPartShips_id"
+                    android:src="@drawable/non_clicked_cell"
+                    android:background="@color/gray"
+                    android:gravity="center_horizontal"
+                    android:text="25.0"
+                    android:layout_weight="2.0"/>
+            </TableRow>
+
+        </TableLayout>
 
         <Button
             android:id="@+id/continueButton_id"
