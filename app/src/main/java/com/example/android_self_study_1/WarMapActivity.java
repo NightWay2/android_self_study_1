@@ -50,7 +50,7 @@ public class WarMapActivity extends AppCompatActivity {
 
         startInit(savedInstanceState);
         createButtonsForBoards();
-
+        // TODO method run to start game
     }
 
     private void startInit(Bundle savedInstanceState) {
@@ -61,6 +61,8 @@ public class WarMapActivity extends AppCompatActivity {
 
         numOfYourRuinsLeft = 20;
         numOfOpponentRuinsLeft = 20;
+
+        // TODO method to place opponent`s ships (to make a possibility to see opponents ships)
     }
 
     private void setIconToButton(ImageView imageView, int type) {
@@ -90,8 +92,6 @@ public class WarMapActivity extends AppCompatActivity {
         ImageView imageButton;
         String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-
-        visited_opponent_arr = new int[10 * 10];
 
         // create ImageView components (buttons) for game board
         for (int i = 0; i < 11; i++) {
@@ -151,6 +151,9 @@ public class WarMapActivity extends AppCompatActivity {
         }
 
         // TODO setup ships for opponent
+
+        visited_opponent_arr = new int[10 * 10]; // todo change
+
         for (int i = 0; i < 11; i++) {
             if (i == 0) {
                 tableLayout = findViewById(R.id.opponentButtonsPanel_id);
@@ -194,7 +197,8 @@ public class WarMapActivity extends AppCompatActivity {
                 imageButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                         TableRow.LayoutParams.WRAP_CONTENT));
                 imageButton.setId((i - 1) * 10 + (j - 1) + 100);
-                visited_opponent_arr[(i - 1) * 10 + (j - 1)] = 0;
+                visited_opponent_arr[(i - 1) * 10 + (j - 1)] = 0; // todo mb change
+                //setIconToButton(imageButton, visited_opponent_arr[(i - 1) * 10 + (j - 1)]);
                 imageButton.setImageResource(R.drawable.non_clicked_cell);
                 imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
