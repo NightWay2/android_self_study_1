@@ -63,6 +63,9 @@ public class WarMapActivity extends AppCompatActivity {
         numOfOpponentRuinsLeft = 20;
 
         placeOpponentShips(); // Place opponent's ships
+
+        isYourMove = true; // Player starts first
+        textViewMove = findViewById(R.id.textViewMove);
     }
 
     private void setIconToButton(ImageView imageView, int type) {
@@ -70,6 +73,8 @@ public class WarMapActivity extends AppCompatActivity {
             Log.d("setIconToButton", "Button was not found!");
             return;
         }
+
+        // TODO change icons
 
         if (type == 1) {
             imageView.setImageResource(R.drawable.one_part_ship);
@@ -91,10 +96,7 @@ public class WarMapActivity extends AppCompatActivity {
         Random random = new Random();
 
         // Ship sizes and their respective counts
-        int[] shipSizes = {1, 1, 1, 1,   // 4 one-part ships
-                2, 2,         // 3 two-part ships
-                3, 3,         // 2 three-part ships
-                4};           // 1 four-part ship
+        int[] shipSizes = {1, 1, 1, 1, 2, 2, 3, 3, 4};
 
         for (int shipSize : shipSizes) {
             boolean placed = false;
