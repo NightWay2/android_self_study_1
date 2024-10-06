@@ -85,8 +85,6 @@ public class WarMapActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO change icons
-
         if (type == 1) {
             imageView.setImageResource(R.drawable.digit_1);
         } else if (type == 2) {
@@ -453,8 +451,6 @@ public class WarMapActivity extends AppCompatActivity {
             Log.d("setRuinToButton", "Button was not found!");
             return;
         }
-
-        // TODO change icons
 
         if (type == 1) {
             imageView.setImageResource(R.drawable.digit_1_ruin);

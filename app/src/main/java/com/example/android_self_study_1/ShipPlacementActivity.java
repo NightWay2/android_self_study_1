@@ -348,8 +348,6 @@ public class ShipPlacementActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO change pictures
-
         if (type == 1) {
             imageView.setImageResource(R.drawable.digit_1);
         } else if (type == 2) {
