@@ -111,7 +111,7 @@
                     android:textSize="18sp"/>
                 <ImageButton
                     android:id="@+id/fourPartShips_id"
-                    android:src="@drawable/non_clicked_cell"
+                    android:src="@drawable/four_part_ship"
                     android:background="@color/gray"
                     android:gravity="center_horizontal"
                     android:text="25.0"
