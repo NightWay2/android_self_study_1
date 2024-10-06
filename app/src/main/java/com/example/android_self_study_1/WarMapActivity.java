@@ -37,6 +37,8 @@ public class WarMapActivity extends AppCompatActivity {
     private int numOfYourRuinsLeft;
     private int numOfOpponentRuinsLeft;
 
+    private static final boolean ARE_OPPONENT_SHIPS_VISIBLE = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -261,9 +263,12 @@ public class WarMapActivity extends AppCompatActivity {
                 imageButton.setId((i - 1) * 10 + (j - 1) + 100); // Offset for opponent buttons
                 imageButton.setTag(String.valueOf((i - 1) * 10 + (j - 1) + 100));
 
-                // comment one
-                //imageButton.setImageResource(R.drawable.non_clicked_cell);
-                setIconToButton(imageButton, visited_opponent_arr[(i - 1) * 10 + (j - 1)]);
+                // comment one of them to change visibility of opponent ships
+                if (!ARE_OPPONENT_SHIPS_VISIBLE) {
+                    imageButton.setImageResource(R.drawable.non_clicked_cell);
+                } else {
+                    setIconToButton(imageButton, visited_opponent_arr[(i - 1) * 10 + (j - 1)]);
+                }
 
                 imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
@@ -327,7 +332,7 @@ public class WarMapActivity extends AppCompatActivity {
                 ImageView targetButton = imageViewList.get(indexOfShot);
                 setRuinToButton(targetButton, opponent_shots[indexOfShot]);
                 numOfYourRuinsLeft--;
-                //botNextShot(indexOfShot); //TODO possibility to upgrade logic if someone wants
+                botNextShot(indexOfShot); //TODO possibility to upgrade logic if someone wants
                 /*Toast.makeText(WarMapActivity.this, "Index bot: " + visited_your_arr[indexOfShot],
                         Toast.LENGTH_SHORT).show();*/
                 if (numOfYourRuinsLeft == 0) {
@@ -351,13 +356,56 @@ public class WarMapActivity extends AppCompatActivity {
         }
     }
 
-    /*private void botNextShot(int indexOfPreviousShot) { //TODO possibility to upgrade logic if someone wants
-        if (visited_your_arr[indexOfPreviousShot] == 1) {
-            botTurn();
-        } else {
+    private void botNextShot(int indexOfPreviousShot) {
+        List<Integer> possibleShots = getPossibleShots(indexOfPreviousShot);
 
+        for (int shot : possibleShots) {
+            if (opponent_shots[shot] == 0) {
+                if (visited_your_arr[shot] != 5 && visited_your_arr[shot] != 0) {
+                    opponent_shots[shot] = visited_your_arr[shot];
+                    ImageView targetButton = imageViewList.get(shot);
+                    setRuinToButton(targetButton, opponent_shots[shot]);
+                    numOfYourRuinsLeft--;
+
+                    if (numOfYourRuinsLeft == 0) {
+                        Toast.makeText(WarMapActivity.this, "Bot is winner!", Toast.LENGTH_SHORT).show();
+                        textViewMove.setText("Bot is winner!");
+                        // TODO do something with win
+                    } else {
+                        botNextShot(shot);
+                    }
+                    return;
+                } else {
+                    opponent_shots[shot] = 5;
+                    ImageView targetButton = imageViewList.get(shot);
+                    setRuinToButton(targetButton, opponent_shots[shot]);
+                    textViewMove.setText("Your turn");
+                    isYourMove = true;
+                    return;
+                }
+            }
         }
-    }*/
+        botTurn();
+    }
+
+    private List<Integer> getPossibleShots(int indexOfPreviousShot) {
+        List<Integer> possibleShots = new ArrayList<>();
+
+        if (indexOfPreviousShot % 10 != 0) {
+            possibleShots.add(indexOfPreviousShot - 1);
+        }
+        if (indexOfPreviousShot % 10 != 9) {
+            possibleShots.add(indexOfPreviousShot + 1);
+        }
+        if (indexOfPreviousShot >= 10) {
+            possibleShots.add(indexOfPreviousShot - 10);
+        }
+        if (indexOfPreviousShot < 90) {
+            possibleShots.add(indexOfPreviousShot + 10);
+        }
+
+        return possibleShots;
+    }
 
     private void setRuinToButton(ImageView imageView, int type) {
         if (imageView == null) {
