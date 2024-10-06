@@ -1,11 +1,15 @@
 package com.example.android_self_study_1;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -39,6 +44,8 @@ public class WarMapActivity extends AppCompatActivity {
 
     private static final boolean ARE_OPPONENT_SHIPS_VISIBLE = false;
 
+    ConstraintLayout main;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +63,8 @@ public class WarMapActivity extends AppCompatActivity {
     }
 
     private void startInit(Bundle savedInstanceState) {
+        main = findViewById(R.id.war_map_activity_id);
+
         textViewOpponentBoard = findViewById(R.id.opponentBoard_id);
         textViewYourBoard = findViewById(R.id.yourBoard_id);
 
@@ -305,6 +314,7 @@ public class WarMapActivity extends AppCompatActivity {
                 setRuinToButton((ImageView) v, 5); // empty ruin
                 isYourMove = false;
                 textViewMove.setText("Bot`s turn");
+                textViewMove.setTextColor(Color.argb(255, 250, 2, 2));
                 botTurn();
             } else {
                 our_shots[indexOfShot] = visited_opponent_arr[indexOfShot];
@@ -314,7 +324,7 @@ public class WarMapActivity extends AppCompatActivity {
                     Toast.makeText(WarMapActivity.this, "You are winner!",
                             Toast.LENGTH_SHORT).show();
                     textViewMove.setText("You are winner!");
-                    // TODO do something with win
+                    gameEnd();
                 }
             }
             /*Toast.makeText(WarMapActivity.this, "Index: " + our_shots[indexOfShot],
@@ -339,7 +349,7 @@ public class WarMapActivity extends AppCompatActivity {
                     Toast.makeText(WarMapActivity.this, "Bot is winner!",
                             Toast.LENGTH_SHORT).show();
                     textViewMove.setText("Bot is winner!");
-                    // TODO do something with win
+                    gameEnd();
                 }
                 botTurn();
             } else {
@@ -347,6 +357,7 @@ public class WarMapActivity extends AppCompatActivity {
                 ImageView targetButton = imageViewList.get(indexOfShot);
                 setRuinToButton(targetButton, opponent_shots[indexOfShot]);
                 textViewMove.setText("Your turn");
+                textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
                 isYourMove = true;
                 /*Toast.makeText(WarMapActivity.this, "Index bot miss: " + visited_your_arr[indexOfShot],
                         Toast.LENGTH_SHORT).show();*/
@@ -370,7 +381,7 @@ public class WarMapActivity extends AppCompatActivity {
                     if (numOfYourRuinsLeft == 0) {
                         Toast.makeText(WarMapActivity.this, "Bot is winner!", Toast.LENGTH_SHORT).show();
                         textViewMove.setText("Bot is winner!");
-                        // TODO do something with win
+                        gameEnd();
                     } else {
                         botNextShot(shot);
                     }
@@ -380,6 +391,7 @@ public class WarMapActivity extends AppCompatActivity {
                     ImageView targetButton = imageViewList.get(shot);
                     setRuinToButton(targetButton, opponent_shots[shot]);
                     textViewMove.setText("Your turn");
+                    textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
                     isYourMove = true;
                     return;
                 }
@@ -406,6 +418,35 @@ public class WarMapActivity extends AppCompatActivity {
 
         return possibleShots;
     }
+
+    private void gameEnd() {
+        isYourMove = false;
+        showInfo();
+    }
+
+    private void showInfo() {
+        View view = View.inflate(WarMapActivity.this, R.layout.pop_up_info, null);
+        Button restart = view.findViewById(R.id.restartButton);
+        TextView winnerText = view.findViewById(R.id.winnerTextView); // Отримання TextView з view
+
+        PopupWindow popupWindow = new PopupWindow(view, 800, 850, false);
+        popupWindow.showAtLocation(main, Gravity.CENTER, 0, 0); // Переконайся, що 'main' ініціалізовано
+
+        if (numOfYourRuinsLeft == 0) {
+            winnerText.setText("Bot won!");
+            winnerText.setTextColor(Color.argb(255, 250, 2, 2));
+        } else {
+            winnerText.setText("You won!");
+            winnerText.setTextColor(Color.argb(255, 65, 179, 30));
+        }
+
+        restart.setOnClickListener(c -> {
+            Intent intent = new Intent(WarMapActivity.this, ShipPlacementActivity.class);
+            startActivity(intent);
+            popupWindow.dismiss();
+        });
+    }
+
 
     private void setRuinToButton(ImageView imageView, int type) {
         if (imageView == null) {
