@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -438,5 +439,12 @@ public class ShipPlacementActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    public void ReOpenLayout(View view){
+        Intent intent = new Intent(ShipPlacementActivity.this, ShipPlacementActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }
