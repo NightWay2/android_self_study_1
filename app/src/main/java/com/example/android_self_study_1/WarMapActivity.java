@@ -94,7 +94,7 @@ public class WarMapActivity extends AppCompatActivity {
         } else if (type == 3) {
             imageView.setImageResource(R.drawable.digit_3);
         } else if (type == 4) {
-            imageView.setImageResource(R.drawable.one_part_ship);
+            imageView.setImageResource(R.drawable.digit_4);
         } else if (type == 5 || type == 0) {
             imageView.setImageResource(R.drawable.non_clicked_cell);
         }
@@ -463,7 +463,7 @@ public class WarMapActivity extends AppCompatActivity {
         } else if (type == 3) {
             imageView.setImageResource(R.drawable.digit_3_ruin);
         } else if (type == 4) {
-            imageView.setImageResource(R.drawable.non_clicked_cell_ruin);
+            imageView.setImageResource(R.drawable.digit_4_ruin);
         } else if (type == 5 || type == 0) {
             imageView.setImageResource(R.drawable.non_clicked_cell_ruin);
         }

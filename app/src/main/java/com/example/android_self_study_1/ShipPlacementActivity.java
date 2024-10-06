@@ -357,7 +357,7 @@ public class ShipPlacementActivity extends AppCompatActivity {
         } else if (type == 3) {
             imageView.setImageResource(R.drawable.digit_3);
         } else if (type == 4) {
-            imageView.setImageResource(R.drawable.one_part_ship);
+            imageView.setImageResource(R.drawable.digit_4);
         } else if (type == 5) {
             imageView.setImageResource(R.drawable.non_clicked_cell);
         }
