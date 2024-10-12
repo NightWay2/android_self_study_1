@@ -167,8 +167,6 @@ public class ShipPlacementActivity extends AppCompatActivity {
                 imageButton.setOnClickListener(v -> {
                     ImageView iView = (ImageView) v;
 
-                    // TODO fix bug with round ships
-
                     // if one-part ship was selected to place
                     if (selectedTypeOfObject == 1 && visited_arr[iView.getId()] == 0
                             && onePartShipsNum > 0) {
@@ -246,7 +244,7 @@ public class ShipPlacementActivity extends AppCompatActivity {
                                         "Incorrect cell!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            if (checkIfIsPartOfShip(clicked_cells_arr, iView.getId())) {
+                            if (checkIfIsPartOfShip(clicked_cells_arr, iView.getId()) && isInLine(clicked_cells_arr, iView.getId())) {
                                 clicksInARow = 0;
                                 clicked_cells_arr[2] = iView.getId();
                                 visited_arr[iView.getId()] = 3;
@@ -256,7 +254,7 @@ public class ShipPlacementActivity extends AppCompatActivity {
                                 setIconToButton(iView, 3);
                             } else {
                                 Toast.makeText(this,
-                                        "Incorrect cell!", Toast.LENGTH_SHORT).show();
+                                        "Incorrect cell or not in line!", Toast.LENGTH_SHORT).show();
                                 return;
                             }
 
@@ -296,7 +294,8 @@ public class ShipPlacementActivity extends AppCompatActivity {
                                         "Incorrect cell!", Toast.LENGTH_SHORT).show();
                             }
                         } else if (clicksInARow == 2) {
-                            if (checkIfIsPartOfShip(clicked_cells_arr, iView.getId())) {
+                            if (checkIfIsPartOfShip(clicked_cells_arr, iView.getId())
+                                    && isInLine(clicked_cells_arr, iView.getId())) {
                                 clicked_cells_arr[2] = iView.getId();
                                 visited_arr[iView.getId()] = 4;
                                 clicksInARow++;
@@ -306,7 +305,8 @@ public class ShipPlacementActivity extends AppCompatActivity {
                                         "Incorrect cell!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            if (checkIfIsPartOfShip(clicked_cells_arr, iView.getId())) {
+                            if (checkIfIsPartOfShip(clicked_cells_arr, iView.getId())
+                                    && isInLine(clicked_cells_arr, iView.getId())) {
                                 clicksInARow = 0;
                                 clicked_cells_arr[3] = iView.getId();
                                 visited_arr[iView.getId()] = 4;
@@ -341,6 +341,36 @@ public class ShipPlacementActivity extends AppCompatActivity {
                     TableRow.LayoutParams.WRAP_CONTENT));
         }
     }
+
+    private boolean isInLine(int[] clicked_cells_arr, int nextCellId) {
+        int firstRow = clicked_cells_arr[0] / 10;
+        int firstCol = clicked_cells_arr[0] % 10;
+        int secondRow = clicked_cells_arr[1] / 10;
+        int secondCol = clicked_cells_arr[1] % 10;
+
+        int nextRow = nextCellId / 10;
+        int nextCol = nextCellId % 10;
+
+        if (clicked_cells_arr[2] != 0) {
+            int thirdRow = clicked_cells_arr[2] / 10;
+            int thirdCol = clicked_cells_arr[2] % 10;
+
+            if (firstRow == secondRow && secondRow == thirdRow) {
+                return nextRow == firstRow && Math.abs(nextCol - thirdCol) == 1;
+            }
+            else if (firstCol == secondCol && secondCol == thirdCol) {
+                return nextCol == firstCol && Math.abs(nextRow - thirdRow) == 1;
+            }
+        } else {
+            if (firstRow == secondRow) {
+                return nextRow == firstRow && Math.abs(nextCol - firstCol) == 2;
+            } else if (firstCol == secondCol) {
+                return nextCol == firstCol && Math.abs(nextRow - firstRow) == 2;
+            }
+        }
+        return false;
+    }
+
 
     void setIconToButton(ImageView imageView, int type) {
 
