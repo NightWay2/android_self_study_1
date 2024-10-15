@@ -328,7 +328,7 @@ public class WarMapActivity extends AppCompatActivity {
             /*Toast.makeText(WarMapActivity.this, "Index: " + our_shots[indexOfShot],
                     Toast.LENGTH_SHORT).show();*/
         } else {
-            Toast.makeText(WarMapActivity.this, "Already shot", Toast.LENGTH_SHORT).show();
+            Toast.makeText(WarMapActivity.this, "Already shot!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -349,7 +349,6 @@ public class WarMapActivity extends AppCompatActivity {
                     textViewMove.setText("Bot is winner!");
                     gameEnd();
                 }
-                botTurn();
             } else {
                 opponent_shots[indexOfShot] = 5;
                 ImageView targetButton = imageViewList.get(indexOfShot);
