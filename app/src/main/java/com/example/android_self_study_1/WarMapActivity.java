@@ -371,12 +371,12 @@ public class WarMapActivity extends AppCompatActivity {
     private int direction = 0;
     private int lastShot = 0;
     private int tempLastShot = 0;
-    ///
+    private int countHelper = 3;
 
     private void botNextShot(int indexOfPreviousShot) {
         List<Integer> possibleShots = getPossibleShots(indexOfPreviousShot);
         if (visited_your_arr[indexOfPreviousShot] == 2) {
-            Log.e("ship2", "Start");
+            /// 2-ship
             for (int shot : possibleShots) {
                 if (opponent_shots[shot] == 0) {
                     if (visited_your_arr[shot] != 5 && visited_your_arr[shot] != 0) {
@@ -401,7 +401,7 @@ public class WarMapActivity extends AppCompatActivity {
                 }
             }
         } else if (visited_your_arr[indexOfPreviousShot] == 3) {
-            Log.e("ship3", "Start");
+            /// 3-ship
             if (direction == 0) {
                 for (int shot : possibleShots) {
                     if (opponent_shots[shot] == 0) {
@@ -453,10 +453,93 @@ public class WarMapActivity extends AppCompatActivity {
                         direction = direction * -1;
                         return;
                     }
+                } else {
+                    direction = direction * -1;
+
+                    opponent_shots[tempLastShot + direction] = visited_your_arr[tempLastShot + direction];
+                    ImageView targetButton = imageViewList.get(tempLastShot + direction);
+                    setRuinToButton(targetButton, opponent_shots[tempLastShot + direction]);
+                    numOfYourRuinsLeft--;
+
+                    lastDestroyed = true;
+                    direction = 0;
                 }
             }
         } else if (visited_your_arr[indexOfPreviousShot] == 4) {
+            /// 4-ship
+            if (direction == 0) {
+                for (int shot : possibleShots) {
+                    if (opponent_shots[shot] == 0) {
+                        if (visited_your_arr[shot] != 5 && visited_your_arr[shot] != 0) {
+                            opponent_shots[shot] = visited_your_arr[shot];
+                            ImageView targetButton = imageViewList.get(shot);
+                            setRuinToButton(targetButton, opponent_shots[shot]);
+                            numOfYourRuinsLeft--;
 
+                            lastDestroyed = false;
+                            direction = shot - indexOfPreviousShot;
+                            tempLastShot = indexOfPreviousShot;
+                            lastShot = shot;
+                            break;
+                        } else {
+                            lastDestroyed = false;
+                            lastShot = indexOfPreviousShot;
+
+                            opponent_shots[shot] = 5;
+                            ImageView targetButton = imageViewList.get(shot);
+                            setRuinToButton(targetButton, opponent_shots[shot]);
+                            textViewMove.setText("Your turn");
+                            textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
+                            isYourMove = true;
+                            return;
+                        }
+                    }
+                }
+            } else {
+                if (countHelper != 0) {
+                    if (opponent_shots[indexOfPreviousShot + direction] == 0) {
+                        if (visited_your_arr[indexOfPreviousShot + direction] != 5
+                                && visited_your_arr[indexOfPreviousShot + direction] != 0) {
+                            opponent_shots[indexOfPreviousShot + direction] = visited_your_arr[indexOfPreviousShot + direction];
+                            ImageView targetButton = imageViewList.get(indexOfPreviousShot + direction);
+                            setRuinToButton(targetButton, opponent_shots[indexOfPreviousShot + direction]);
+                            numOfYourRuinsLeft--;
+
+                            lastShot = indexOfPreviousShot + direction;
+
+                            countHelper--;
+                            if (countHelper == 0) {
+                                lastDestroyed = true;
+                                direction = 0;
+                            }
+                        } else {
+                            opponent_shots[indexOfPreviousShot + direction] = 5;
+                            ImageView targetButton = imageViewList.get(indexOfPreviousShot + direction);
+                            setRuinToButton(targetButton, opponent_shots[indexOfPreviousShot + direction]);
+                            textViewMove.setText("Your turn");
+                            textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
+                            isYourMove = true;
+
+                            lastShot = tempLastShot;
+                            direction = direction * -1;
+                            return;
+                        }
+                    } else {
+                        direction = direction * -1;
+
+                        opponent_shots[tempLastShot + direction] = visited_your_arr[tempLastShot + direction];
+                        ImageView targetButton = imageViewList.get(tempLastShot + direction);
+                        setRuinToButton(targetButton, opponent_shots[tempLastShot + direction]);
+                        numOfYourRuinsLeft--;
+
+                        countHelper--;
+                        if (countHelper == 0) {
+                            lastDestroyed = true;
+                            direction = 0;
+                        }
+                    }
+                }
+            }
         }
 
         if (numOfYourRuinsLeft == 0) {
@@ -508,9 +591,8 @@ public class WarMapActivity extends AppCompatActivity {
             winnerText.setTextColor(Color.argb(255, 65, 179, 30));
         }
 
-        restart.setOnClickListener(c -> {
-            finish();
-            Intent intent = new Intent(new MainActivity(), ShipPlacementActivity.class);
+        restart.setOnClickListener(c -> { // TODO : fix this
+            Intent intent = new Intent(this, ShipPlacementActivity.class);
             startActivity(intent);
             popupWindow.dismiss();
         });
