@@ -332,7 +332,7 @@ public class WarMapActivity extends AppCompatActivity {
         }
     }
 
-    private void botTurn() {
+    /*private void botTurn() {
         int indexOfShot = new Random().nextInt(100);
         if (opponent_shots[indexOfShot] == 0) {
             if (visited_your_arr[indexOfShot] != 5 && visited_your_arr[indexOfShot] != 0) {
@@ -341,8 +341,8 @@ public class WarMapActivity extends AppCompatActivity {
                 setRuinToButton(targetButton, opponent_shots[indexOfShot]);
                 numOfYourRuinsLeft--;
                 botNextShot(indexOfShot); //TODO possibility to upgrade logic if someone wants
-                /*Toast.makeText(WarMapActivity.this, "Index bot: " + visited_your_arr[indexOfShot],
-                        Toast.LENGTH_SHORT).show();*/
+                *//*Toast.makeText(WarMapActivity.this, "Index bot: " + visited_your_arr[indexOfShot],
+                        Toast.LENGTH_SHORT).show();*//*
                 if (numOfYourRuinsLeft == 0) {
                     Toast.makeText(WarMapActivity.this, "Bot is winner!",
                             Toast.LENGTH_SHORT).show();
@@ -356,15 +356,151 @@ public class WarMapActivity extends AppCompatActivity {
                 textViewMove.setText("Your turn");
                 textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
                 isYourMove = true;
-                /*Toast.makeText(WarMapActivity.this, "Index bot miss: " + visited_your_arr[indexOfShot],
-                        Toast.LENGTH_SHORT).show();*/
+                *//*Toast.makeText(WarMapActivity.this, "Index bot miss: " + visited_your_arr[indexOfShot],
+                        Toast.LENGTH_SHORT).show();*//*
             }
+        } else {
+            botTurn();
+        }
+    }*/
+
+    private void botTurn() {
+        if (lastDestroyed) {
+            int indexOfShot = new Random().nextInt(100);
+            if (opponent_shots[indexOfShot] == 0) {
+                if (visited_your_arr[indexOfShot] != 5 && visited_your_arr[indexOfShot] != 0) {
+                    opponent_shots[indexOfShot] = visited_your_arr[indexOfShot];
+                    ImageView targetButton = imageViewList.get(indexOfShot);
+                    setRuinToButton(targetButton, opponent_shots[indexOfShot]);
+                    numOfYourRuinsLeft--;
+                    botNextShot(indexOfShot); //TODO possibility to upgrade logic if someone wants
+                //Toast.makeText(WarMapActivity.this, "Index bot: " + visited_your_arr[indexOfShot], Toast.LENGTH_SHORT).show();
+                    if (numOfYourRuinsLeft == 0) {
+                        Toast.makeText(WarMapActivity.this, "Bot is winner!",
+                                Toast.LENGTH_SHORT).show();
+                        textViewMove.setText("Bot is winner!");
+                        gameEnd();
+                    }
+                } else {
+                    opponent_shots[indexOfShot] = 5;
+                    ImageView targetButton = imageViewList.get(indexOfShot);
+                    setRuinToButton(targetButton, opponent_shots[indexOfShot]);
+                    textViewMove.setText("Your turn");
+                    textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
+                    isYourMove = true;
+                    //Toast.makeText(WarMapActivity.this, "Index bot miss: " + visited_your_arr[indexOfShot], Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                botTurn();
+            }
+        } else {
+            botNextShot(lastShot);
+        }
+    }
+
+    /// new types if they are needed for bot ai
+    private boolean lastDestroyed = true;
+    private int direction = 0;
+    private int lastShot = 0;
+    private int tempLastShot = 0;
+    ///
+
+    private void botNextShot(int indexOfPreviousShot) {
+        List<Integer> possibleShots = getPossibleShots(indexOfPreviousShot);
+        if (visited_your_arr[indexOfPreviousShot] == 2) {
+            Log.e("ship2", "Start");
+            for (int shot : possibleShots) {
+                if (opponent_shots[shot] == 0) {
+                    if (visited_your_arr[shot] != 5 && visited_your_arr[shot] != 0) {
+                        opponent_shots[shot] = visited_your_arr[shot];
+                        ImageView targetButton = imageViewList.get(shot);
+                        setRuinToButton(targetButton, opponent_shots[shot]);
+                        numOfYourRuinsLeft--;
+                        lastDestroyed = true;
+                        break;
+                    } else {
+                        lastDestroyed = false;
+                        lastShot = indexOfPreviousShot;
+
+                        opponent_shots[shot] = 5;
+                        ImageView targetButton = imageViewList.get(shot);
+                        setRuinToButton(targetButton, opponent_shots[shot]);
+                        textViewMove.setText("Your turn");
+                        textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
+                        isYourMove = true;
+                        return;
+                    }
+                }
+            }
+        } else if (visited_your_arr[indexOfPreviousShot] == 3) {
+            Log.e("ship3", "Start");
+            if (direction == 0) {
+                for (int shot : possibleShots) {
+                    if (opponent_shots[shot] == 0) {
+                        if (visited_your_arr[shot] != 5 && visited_your_arr[shot] != 0) {
+                            opponent_shots[shot] = visited_your_arr[shot];
+                            ImageView targetButton = imageViewList.get(shot);
+                            setRuinToButton(targetButton, opponent_shots[shot]);
+                            numOfYourRuinsLeft--;
+
+                            lastDestroyed = false;
+                            direction = shot - indexOfPreviousShot;
+                            tempLastShot = indexOfPreviousShot;
+                            lastShot = shot;
+                            break;
+                        } else {
+                            lastDestroyed = false;
+                            lastShot = indexOfPreviousShot;
+
+                            opponent_shots[shot] = 5;
+                            ImageView targetButton = imageViewList.get(shot);
+                            setRuinToButton(targetButton, opponent_shots[shot]);
+                            textViewMove.setText("Your turn");
+                            textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
+                            isYourMove = true;
+                            return;
+                        }
+                    }
+                }
+            } else {
+                if (opponent_shots[indexOfPreviousShot + direction] == 0) {
+                    if (visited_your_arr[indexOfPreviousShot + direction] != 5
+                            && visited_your_arr[indexOfPreviousShot + direction] != 0) {
+                        opponent_shots[indexOfPreviousShot + direction] = visited_your_arr[indexOfPreviousShot + direction];
+                        ImageView targetButton = imageViewList.get(indexOfPreviousShot + direction);
+                        setRuinToButton(targetButton, opponent_shots[indexOfPreviousShot + direction]);
+                        numOfYourRuinsLeft--;
+
+                        lastDestroyed = true;
+                        direction = 0;
+                    } else {
+                        opponent_shots[indexOfPreviousShot + direction] = 5;
+                        ImageView targetButton = imageViewList.get(indexOfPreviousShot + direction);
+                        setRuinToButton(targetButton, opponent_shots[indexOfPreviousShot + direction]);
+                        textViewMove.setText("Your turn");
+                        textViewMove.setTextColor(Color.argb(255, 65, 179, 30));
+                        isYourMove = true;
+
+                        lastShot = tempLastShot;
+                        direction = direction * -1;
+                        return;
+                    }
+                }
+            }
+        } else if (visited_your_arr[indexOfPreviousShot] == 4) {
+
+        }
+
+        if (numOfYourRuinsLeft == 0) {
+            Toast.makeText(WarMapActivity.this, "Bot is winner!", Toast.LENGTH_SHORT).show();
+            textViewMove.setText("Bot is winner!");
+            gameEnd();
         } else {
             botTurn();
         }
     }
 
-    private void botNextShot(int indexOfPreviousShot) {
+    /*private void botNextShot(int indexOfPreviousShot) {
         List<Integer> possibleShots = getPossibleShots(indexOfPreviousShot);
 
         for (int shot : possibleShots) {
@@ -395,7 +531,7 @@ public class WarMapActivity extends AppCompatActivity {
             }
         }
         botTurn();
-    }
+    }*/
 
     private List<Integer> getPossibleShots(int indexOfPreviousShot) {
         List<Integer> possibleShots = new ArrayList<>();
@@ -424,10 +560,10 @@ public class WarMapActivity extends AppCompatActivity {
     private void showInfo() {
         View view = View.inflate(WarMapActivity.this, R.layout.pop_up_info, null);
         Button restart = view.findViewById(R.id.restartButton);
-        TextView winnerText = view.findViewById(R.id.winnerTextView); // Отримання TextView з view
+        TextView winnerText = view.findViewById(R.id.winnerTextView);
 
         PopupWindow popupWindow = new PopupWindow(view, 800, 850, false);
-        popupWindow.showAtLocation(main, Gravity.CENTER, 0, 0); // Переконайся, що 'main' ініціалізовано
+        popupWindow.showAtLocation(main, Gravity.CENTER, 0, 0);
 
         if (numOfYourRuinsLeft == 0) {
             winnerText.setText("Bot won!");
