@@ -371,7 +371,7 @@ public class WarMapActivity extends AppCompatActivity {
     private int direction = 0;
     private int lastShot = 0;
     private int tempLastShot = 0;
-    private int countHelper = 3;
+    private int countHelper = 2;
 
     private void botNextShot(int indexOfPreviousShot) {
         List<Integer> possibleShots = getPossibleShots(indexOfPreviousShot);
